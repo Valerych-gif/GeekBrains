@@ -1,4 +1,4 @@
-package valerych.lesson2;
+package ru.geekbrains.valerych.lesson2;
 // Задание 7
 public class Shift {
     public static void main(String[] args) {

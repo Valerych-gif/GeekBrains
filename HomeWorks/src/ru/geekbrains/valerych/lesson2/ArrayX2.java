@@ -1,4 +1,4 @@
-package valerych.lesson2;
+package ru.geekbrains.valerych.lesson2;
 // Задание 3
 public class ArrayX2 {
     public static void main(String[] args) {

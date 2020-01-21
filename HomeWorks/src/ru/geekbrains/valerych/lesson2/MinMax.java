@@ -1,4 +1,4 @@
-package valerych.lesson2;
+package ru.geekbrains.valerych.lesson2;
 // Задание 5
 public class MinMax {
     public static void main(String[] args) {
