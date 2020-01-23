@@ -41,12 +41,12 @@ public class LettersGame {
             if (userAnswerChar==rightAnswerChar){
                 answerToShow.append(rightAnswerChar);
             } else {
-                answerToShow = new StringBuilder(answerToShow.toString().concat("#"));
+                answerToShow = answerToShow.append('#');
             }
         }
         int answerToShowLength = answerToShow.length();
         for (int i = 0; i < (15 - answerToShowLength); i++) {
-            answerToShow = new StringBuilder(answerToShow.toString().concat("#"));
+            answerToShow = answerToShow.append('#');
         }
         System.out.println(answerToShow);
     }
