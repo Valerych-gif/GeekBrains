@@ -195,6 +195,29 @@ public class TicTacToe {
     private static void aiTurn() {
         System.out.println("Ход компьютера");
         int rowNumber, colNumber;
+
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                rowNumber=i+1;
+                colNumber=j+1;
+                if (isCellValid(rowNumber,colNumber)&&isWinnable (rowNumber, colNumber)){
+                    map[rowNumber - 1][colNumber - 1] = DOT_O;
+                    return;
+                }
+            }
+        }
+
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                rowNumber=i+1;
+                colNumber=j+1;
+                if (isCellValid(rowNumber,colNumber)&&isLosable (rowNumber, colNumber)){
+                    map[rowNumber - 1][colNumber - 1] = DOT_O;
+                    return;
+                }
+            }
+        }
+
         do {
             rowNumber = random.nextInt(SIZE) + 1;
             colNumber = random.nextInt(SIZE) + 1;
@@ -202,6 +225,31 @@ public class TicTacToe {
 
         map[rowNumber - 1][colNumber - 1] = DOT_O;
     }
+
+    private static boolean isLosable(int rowNumber, int colNumber) {
+        map[rowNumber - 1][colNumber - 1] = DOT_X;
+        if (checkWin(DOT_X)){
+            map[rowNumber - 1][colNumber - 1] = DOT_EMPTY;
+            return true;
+        } else {
+            map[rowNumber - 1][colNumber - 1] = DOT_EMPTY;
+            return false;
+        }
+
+    }
+
+    private static boolean isWinnable(int rowNumber, int colNumber) {
+        map[rowNumber - 1][colNumber - 1] = DOT_O;
+        if (checkWin(DOT_O)){
+            map[rowNumber - 1][colNumber - 1] = DOT_EMPTY;
+            return true;
+        } else {
+            map[rowNumber - 1][colNumber - 1] = DOT_EMPTY;
+            return false;
+        }
+
+    }
+
 
     private static boolean isCellValid(int rowNumber, int colNumber) {
         if (rowNumber < 1 || rowNumber > SIZE)
