@@ -3,11 +3,12 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class TicTacToe {
-    private static final int SIZE = 3;
+    private static final int SIZE = 5;
     private static final char DOT_EMPTY = '•';
     private static final char DOT_X = 'X';
     private static final char DOT_O = 'O';
-    public static final String EMPTY_COLUMN_TITLE = "  ";
+    private static final String EMPTY_COLUMN_TITLE = "  ";
+    private static final int DOTS_FOR_WIN = 4;
 
     private static char[][] map;
     private static Scanner scanner = new Scanner(System.in);
@@ -65,69 +66,116 @@ public class TicTacToe {
     }
 
     private static boolean checkRows(char symbol) {
-        boolean isAllSymbolSame;
+        int sameSymbolCounter;
         for (int i = 0; i < SIZE; i++) {
-            isAllSymbolSame = true;
+            sameSymbolCounter = 0;
             for (int j = 0; j < SIZE; j++) {
-                if (!(map[i][j]==symbol)){
-                    isAllSymbolSame = false;
-                    break;
+                if (map[i][j]==symbol){
+                    sameSymbolCounter += 1;
+                    if (sameSymbolCounter>=DOTS_FOR_WIN){
+                        return true;
+                    }
+                } else {
+                    sameSymbolCounter=0;
                 }
-            }
-            if (isAllSymbolSame){
-                return true;
             }
         }
         return false;
     }
 
     private static boolean checkCols(char symbol) {
-        boolean isAllSymbolSame;
+        int sameSymbolCounter;
         for (int i = 0; i < SIZE; i++) {
-            isAllSymbolSame = true;
+            sameSymbolCounter = 0;
             for (int j = 0; j < SIZE; j++) {
-                if (!(map[j][i]==symbol)){
-                    isAllSymbolSame = false;
-                    break;
+                if (map[j][i]==symbol){
+                    sameSymbolCounter += 1;
+                    if (sameSymbolCounter>=DOTS_FOR_WIN){
+                        return true;
+                    }
+                } else {
+                    sameSymbolCounter = 0;
                 }
-            }
-            if (isAllSymbolSame){
-                return true;
             }
         }
         return false;
     }
 
     private static boolean checkDiagonals(char symbol) {
-        return chechMainDiagonal(symbol)||chechReverseDiagonal(symbol);
+        return checkMainDiagonals(symbol)||checkReverseDiagonals(symbol);
     }
 
-    private static boolean chechMainDiagonal(char symbol) {
-        boolean isAllSymbolSame;
-        isAllSymbolSame = true;
+    private static boolean checkMainDiagonals(char symbol) {
+        int quantityDotsOnDiagonal;
+        int sameSymbolCounter;
+
         for (int i = 0; i < SIZE; i++) {
-            if (!(map[i][i]==symbol)){
-                isAllSymbolSame = false;
-                break;
+            quantityDotsOnDiagonal = SIZE - i;
+            sameSymbolCounter=0;
+            for (int j = 0; j < quantityDotsOnDiagonal; j++) {
+                if (map[j][j+i]==symbol){
+                    sameSymbolCounter += 1;
+                    if (sameSymbolCounter>=DOTS_FOR_WIN){
+                        return true;
+                    }
+                } else {
+                    sameSymbolCounter=0;
+                }
             }
         }
-        if (isAllSymbolSame){
-            return true;
+
+        for (int i = 0; i < SIZE; i++) {
+            quantityDotsOnDiagonal = SIZE - i;
+            sameSymbolCounter=0;
+            for (int j = 0; j < quantityDotsOnDiagonal; j++) {
+                if (map[j+i][j]==symbol){
+                    sameSymbolCounter += 1;
+                    if (sameSymbolCounter>=DOTS_FOR_WIN){
+                        return true;
+                    }
+                } else {
+                    sameSymbolCounter=0;
+                }
+            }
         }
+
         return false;
     }
-    private static boolean chechReverseDiagonal(char symbol) {
-        boolean isAllSymbolSame;
-        isAllSymbolSame = true;
+
+    private static boolean checkReverseDiagonals(char symbol) {
+        int quantityDotsOnDiagonal;
+        int sameSymbolCounter;
+
         for (int i = 0; i < SIZE; i++) {
-            if (!(map[i][SIZE-1-i]==symbol)){
-                isAllSymbolSame = false;
-                break;
+            quantityDotsOnDiagonal = SIZE - i;
+            sameSymbolCounter=0;
+            for (int j = 0; j < quantityDotsOnDiagonal; j++) {
+                if (map[j][SIZE-1-(j+i)]==symbol){
+                    sameSymbolCounter += 1;
+                    if (sameSymbolCounter>=DOTS_FOR_WIN){
+                        return true;
+                    }
+                } else {
+                    sameSymbolCounter=0;
+                }
             }
         }
-        if (isAllSymbolSame){
-            return true;
+
+        for (int i = 0; i < SIZE; i++) {
+            quantityDotsOnDiagonal = SIZE - i;
+            sameSymbolCounter = 0;
+            for (int j = 0; j < quantityDotsOnDiagonal; j++) {
+                if (map[SIZE - 1 - (j + i)][j] == symbol) {
+                    sameSymbolCounter += 1;
+                    if (sameSymbolCounter >= DOTS_FOR_WIN) {
+                        return true;
+                    }
+                } else {
+                    sameSymbolCounter=0;
+                }
+            }
         }
+
         return false;
     }
 
