@@ -3,6 +3,8 @@ package ru.geekbrains.valerych.lesson5;
 public class Employee {
 
     private static final float MIN_SALARY_IN_RUSSIA = 11280f;
+    private static final int MAX_AGE = 40;
+    private static final String[] POSITION = new String[]{"Unknown", "Just Engineer", "Leader", "Mega Boss"};
 
     private static int counter;
 
@@ -66,8 +68,8 @@ public class Employee {
 
     private String checkPosition(String position) {
 
-        String[] positions = new String[]{"Unknown", "Just Engineer", "Leader", "Mega Boss"};
-        for (String s : positions) {
+
+        for (String s : POSITION) {
             if (s.equals(position)){
                 return position;
             }
@@ -94,11 +96,7 @@ public class Employee {
     }
 
     public boolean isVeryOld(){
-        if (this.age>40){
-            return true;
-        } else {
-            return false;
-        }
+        return this.age>MAX_AGE;
     }
 
     @Override
