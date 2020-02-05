@@ -10,14 +10,21 @@ public class TicTacToe {
         Map map = new Map(SIZE);
         Game game = new Game(map, DOTS_FOR_WIN);
         Ai ai = new Ai(map, game);
-        boolean gameOver;
-
         map.print();
 
         do{
-            game.play(ai);
-            gameOver = game.checkEnd(map.DOT_X)||game.checkEnd(map.DOT_O)||map.isFull();
-        }while (!gameOver);
+
+            game.humanTurn();
+            map.print();
+            if (game.checkEnd(CellType.CROSS)) break;
+
+            ai.aiTurn();
+            map.print();
+            if (game.checkEnd(CellType.ZERO)) break;
+
+            if (map.isFull()) break;
+
+        }while (true);
 
         game.gameOver();
     }

@@ -2,19 +2,19 @@ package ru.geekbrains.valerych.lesson4;
 
 public class Map {
 
-    public static final char DOT_EMPTY = '•';
-    public static final char DOT_X = 'X';
-    public static final char DOT_O = 'O';
     private static final String EMPTY_COLUMN_TITLE = "  ";
-    char[][] cells;
+    Cell[][] cells;
     int size;
 
     Map (int size){
-        cells = new char[size][size];
+        cells = new Cell[size][size];
         this.size=size;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                cells[i][j] = DOT_EMPTY;
+                cells[i][j] = new Cell(i, j);
+                cells[i][j].clear();
+                cells[i][j].setX(i);
+                cells[i][j].setY(j);
             }
         }
     }
@@ -28,7 +28,7 @@ public class Map {
         for (int i = 0; i < size; i++) {
             printColumnNumber(i);
             for (int j = 0; j < size; j++) {
-                System.out.print(cells[i][j] + " ");
+                System.out.print(cells[i][j].toChar() + " ");
             }
             System.out.println();
         }
@@ -55,7 +55,7 @@ public class Map {
     public boolean isFull() {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if (cells[i][j] == DOT_EMPTY) {
+                if (cells[i][j].isEmpty()) {
                     return false;
                 }
             }
@@ -70,7 +70,7 @@ public class Map {
         if (colNumber < 1 || colNumber > size)
             return false;
 
-        return cells[rowNumber - 1][colNumber - 1] == DOT_EMPTY;
+        return cells[rowNumber - 1][colNumber - 1].isEmpty();
     }
 
 }

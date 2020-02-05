@@ -13,42 +13,24 @@ public class Game {
         this.dotsForWin=dotsForWin;
     }
 
-    public void play(Ai ai) {
-            humanTurn();
-            map.print();
-
-            if (checkEnd(map.DOT_X)){
-                return;
-            }
-
-            ai.aiTurn();
-            map.print();
-            if (checkEnd(map.DOT_O)){
-                return;
-            }
-    }
-
-    public boolean checkEnd(char symbol) {
-        if (checkWin(symbol)) {
+    public boolean checkEnd(CellType type) {
+        if (checkWin(type)) {
             return true;
         }
-        if (map.isFull()) {
-            return true;
-        }
-        return false;
+        return map.isFull();
     }
 
-    public boolean checkWin(char symbol) {
-        return checkRows(symbol)||checkCols(symbol)||checkDiagonals(symbol);
+    public boolean checkWin(CellType type) {
+        return checkRows(type)||checkCols(type)||checkDiagonals(type);
 
     }
 
-    private boolean checkRows(char symbol) {
+    private boolean checkRows(CellType type) {
         int sameSymbolCounter;
         for (int i = 0; i < map.size; i++) {
             sameSymbolCounter = 0;
             for (int j = 0; j < map.size; j++) {
-                if (map.cells[i][j]==symbol){
+                if ((map.cells[i][j].getType()).equals(type)){
                     sameSymbolCounter += 1;
                     if (sameSymbolCounter>=dotsForWin){
                         return true;
@@ -61,12 +43,12 @@ public class Game {
         return false;
     }
 
-    private boolean checkCols(char symbol) {
+    private boolean checkCols(CellType type) {
         int sameSymbolCounter;
         for (int i = 0; i < map.size; i++) {
             sameSymbolCounter = 0;
             for (int j = 0; j < map.size; j++) {
-                if (map.cells[j][i]==symbol){
+                if ((map.cells[i][j].getType()).equals(type)){
                     sameSymbolCounter += 1;
                     if (sameSymbolCounter>=dotsForWin){
                         return true;
@@ -79,76 +61,87 @@ public class Game {
         return false;
     }
 
-    private boolean checkDiagonals(char symbol) {
-        return checkMainDiagonals(symbol)||checkReverseDiagonals(symbol);
-    }
-
-    private boolean checkMainDiagonals(char symbol) {
-        int quantityDotsOnDiagonal;
-        int sameSymbolCounter;
-
+    private boolean checkDiagonals(CellType type) {
         for (int i = 0; i < map.size; i++) {
-            quantityDotsOnDiagonal = map.size - i;
-            sameSymbolCounter=0;
-            for (int j = 0; j < quantityDotsOnDiagonal; j++) {
-                if (map.cells[j][j+i]==symbol){
-                    sameSymbolCounter += 1;
-                    if (sameSymbolCounter>=dotsForWin){
-                        return true;
-                    }
-                } else {
-                    sameSymbolCounter=0;
-                }
-            }
+            if (
+                    checkDiagonal(i, 0, type, "main")||
+                    checkDiagonal(0, i, type,"main")||
+                    checkDiagonal(i, 0, type, "reverse")||
+                    checkDiagonal(0, i, type,"reverse")
+            ) return true;
         }
-
-        for (int i = 0; i < map.size; i++) {
-            quantityDotsOnDiagonal = map.size - i;
-            sameSymbolCounter=0;
-            for (int j = 0; j < quantityDotsOnDiagonal; j++) {
-                if (map.cells[j+i][j]==symbol){
-                    sameSymbolCounter += 1;
-                    if (sameSymbolCounter>=dotsForWin){
-                        return true;
-                    }
-                } else {
-                    sameSymbolCounter=0;
-                }
-            }
-        }
-
         return false;
     }
 
-    private boolean checkReverseDiagonals(char symbol) {
-        int quantityDotsOnDiagonal;
+    private boolean checkDiagonal (int startRow, int startCol, CellType type, String direction){
+        int quantityDotsOnDiagonal=map.size;
         int sameSymbolCounter;
 
-        for (int i = 0; i < map.size; i++) {
-            quantityDotsOnDiagonal = map.size - i;
-            sameSymbolCounter=0;
-            for (int j = 0; j < quantityDotsOnDiagonal; j++) {
-                if (map.cells[j][map.size-1-(j+i)]==symbol){
-                    sameSymbolCounter += 1;
-                    if (sameSymbolCounter>=dotsForWin){
-                        return true;
-                    }
-                } else {
-                    sameSymbolCounter=0;
-                }
-            }
-        }
+        if (startRow>=0&&direction.equals("main")) {
 
-        for (int i = 0; i < map.size; i++) {
-            quantityDotsOnDiagonal = map.size - i;
+            quantityDotsOnDiagonal -= startRow;
+            if (quantityDotsOnDiagonal < dotsForWin) return false;
+
             sameSymbolCounter = 0;
-            for (int j = 0; j < quantityDotsOnDiagonal; j++) {
-                if (map.cells[map.size - 1 - (j + i)][j] == symbol) {
+            for (int i = startCol; i < quantityDotsOnDiagonal; i++) {
+                if ((map.cells[i+startRow][i].getType()).equals(type)) {
                     sameSymbolCounter += 1;
                     if (sameSymbolCounter >= dotsForWin) {
                         return true;
                     }
                 } else {
+                    sameSymbolCounter = 0;
+                }
+            }
+        }
+
+        if (startCol>=0&&direction.equals("main")) {
+
+            quantityDotsOnDiagonal -= startCol;
+            if (quantityDotsOnDiagonal < dotsForWin) return false;
+
+            sameSymbolCounter = 0;
+            for (int i = startRow; i < quantityDotsOnDiagonal; i++) {
+                if ((map.cells[i][+startCol].getType()).equals(type)) {
+                    sameSymbolCounter += 1;
+                    if (sameSymbolCounter >= dotsForWin) {
+                        return true;
+                    }
+                } else {
+                    sameSymbolCounter = 0;
+                }
+            }
+        }
+
+        if (startRow>=0&&direction.equals("reverse")){
+
+            quantityDotsOnDiagonal = map.size - startRow;
+            sameSymbolCounter=0;
+
+            for (int i = startCol; i < quantityDotsOnDiagonal; i++) {
+                if ((map.cells[i+startRow][map.size-1-i].getType()).equals(type)){
+                    sameSymbolCounter += 1;
+                    if (sameSymbolCounter>=dotsForWin){
+                        return true;
+                    }
+                } else {
+                    sameSymbolCounter=0;
+                }
+            }
+        }
+
+        if (startCol<(map.size-1)&&direction.equals("reverse")){
+
+            quantityDotsOnDiagonal = startCol+1;
+            sameSymbolCounter=0;
+
+            for (int i = startRow; i < quantityDotsOnDiagonal; i++) {
+                if ((map.cells[i][startCol-i].getType()).equals(type)){
+                    sameSymbolCounter += 1;
+                    if (sameSymbolCounter>=dotsForWin){
+                        return true;
+                    }
+                } else {
                     sameSymbolCounter=0;
                 }
             }
@@ -157,7 +150,7 @@ public class Game {
         return false;
     }
 
-    private void humanTurn() {
+    public void humanTurn() {
         int rowNumber, colNumber;
         do {
             System.out.println("Ход пользователя. Введите номер строки и столбца");
@@ -167,14 +160,14 @@ public class Game {
             colNumber = scanner.nextInt();
         } while (!map.isCellValid(rowNumber, colNumber));
 
-        map.cells[rowNumber - 1][colNumber - 1] = map.DOT_X;
+        map.cells[rowNumber - 1][colNumber - 1].putCross();
     }
 
     public void gameOver (){
-        if (checkEnd(map.DOT_X)){
+        if (checkEnd(CellType.CROSS)){
             System.out.println("Поздравляю, Вы победили");
         }
-        if (checkEnd(map.DOT_O)){
+        if (checkEnd(CellType.ZERO)){
             System.out.println("Вы проиграли");
         }
         if (map.isFull()){

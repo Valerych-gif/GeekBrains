@@ -22,7 +22,7 @@ public class Ai {
                 rowNumber=i+1;
                 colNumber=j+1;
                 if (map.isCellValid(rowNumber,colNumber)&&isWinnable (rowNumber, colNumber)){
-                    map.cells[rowNumber - 1][colNumber - 1] = map.DOT_O;
+                    map.cells[rowNumber - 1][colNumber - 1].putZero();
                     return;
                 }
             }
@@ -33,7 +33,7 @@ public class Ai {
                 rowNumber=i+1;
                 colNumber=j+1;
                 if (map.isCellValid(rowNumber,colNumber)&&isLosable (rowNumber, colNumber)){
-                    map.cells[rowNumber - 1][colNumber - 1] = map.DOT_O;
+                    map.cells[rowNumber - 1][colNumber - 1].putZero();
                     return;
                 }
             }
@@ -44,28 +44,28 @@ public class Ai {
             colNumber = random.nextInt(map.size) + 1;
         } while (!map.isCellValid(rowNumber, colNumber));
 
-        map.cells[rowNumber - 1][colNumber - 1] = map.DOT_O;
+        map.cells[rowNumber - 1][colNumber - 1].putZero();
     }
 
     private boolean isLosable(int rowNumber, int colNumber) {
-        map.cells[rowNumber - 1][colNumber - 1] = map.DOT_X;
-        if (game.checkWin(map.DOT_X)){
-            map.cells[rowNumber - 1][colNumber - 1] = map.DOT_EMPTY;
+        map.cells[rowNumber - 1][colNumber - 1].putCross();
+        if (game.checkWin(CellType.CROSS)){
+            map.cells[rowNumber - 1][colNumber - 1].clear();
             return true;
         } else {
-            map.cells[rowNumber - 1][colNumber - 1] = map.DOT_EMPTY;
+            map.cells[rowNumber - 1][colNumber - 1].clear();
             return false;
         }
 
     }
 
     private boolean isWinnable(int rowNumber, int colNumber) {
-        map.cells[rowNumber - 1][colNumber - 1] = map.DOT_O;
-        if (game.checkWin(map.DOT_O)){
-            map.cells[rowNumber - 1][colNumber - 1] = map.DOT_EMPTY;
+        map.cells[rowNumber - 1][colNumber - 1].putZero();
+        if (game.checkWin(CellType.ZERO)){
+            map.cells[rowNumber - 1][colNumber - 1].clear();
             return true;
         } else {
-            map.cells[rowNumber - 1][colNumber - 1] = map.DOT_EMPTY;
+            map.cells[rowNumber - 1][colNumber - 1].clear();
             return false;
         }
 
