@@ -1,8 +1,7 @@
-package ru.geekbrains.valerych.lesson4;
+package ru.valerych.tictactoe;
 
 public class Map {
 
-    private static final String EMPTY_COLUMN_TITLE = "  ";
     Cell[][] cells;
     int size;
 
@@ -17,39 +16,6 @@ public class Map {
                 cells[i][j].setY(j);
             }
         }
-    }
-
-    public void print() {
-        printHeader();
-        printRows();
-    }
-
-    public void printRows() {
-        for (int i = 0; i < size; i++) {
-            printColumnNumber(i);
-            for (int j = 0; j < size; j++) {
-                System.out.print(cells[i][j].toChar() + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
-
-    public void printColumnNumber(int i) {
-        int columnNumber = i + 1;
-        System.out.print(columnNumber + " ");
-    }
-
-    public void printHeader() {
-        printEmptyHeaderForFirstColumn();
-        for (int i = 0; i < size; i++) {
-            printColumnNumber(i);
-        }
-        System.out.println();
-    }
-
-    public void printEmptyHeaderForFirstColumn() {
-        System.out.print(EMPTY_COLUMN_TITLE);
     }
 
     public boolean isFull() {

@@ -1,12 +1,9 @@
-package ru.geekbrains.valerych.lesson4;
-
-import java.util.Scanner;
+package ru.valerych.tictactoe;
 
 public class Game {
 
     private Map map;
     int dotsForWin;
-    private Scanner scanner = new Scanner(System.in);
 
     Game (Map map, int dotsForWin){
         this.map=map;
@@ -48,7 +45,7 @@ public class Game {
         for (int i = 0; i < map.size; i++) {
             sameSymbolCounter = 0;
             for (int j = 0; j < map.size; j++) {
-                if ((map.cells[i][j].getType()).equals(type)){
+                if ((map.cells[j][i].getType()).equals(type)){
                     sameSymbolCounter += 1;
                     if (sameSymbolCounter>=dotsForWin){
                         return true;
@@ -73,6 +70,7 @@ public class Game {
         return false;
     }
 
+    // @TODO Эту часть кода надо переписать в удобочитаемый вид (избавиться от флагов и разбить все на разные методы)
     private boolean checkDiagonal (int startRow, int startCol, CellType type, String direction){
         int quantityDotsOnDiagonal=map.size;
         int sameSymbolCounter;
@@ -95,14 +93,14 @@ public class Game {
             }
         }
 
-        if (startCol>=0&&direction.equals("main")) {
+        if (startCol>0&&direction.equals("main")) {
 
             quantityDotsOnDiagonal -= startCol;
             if (quantityDotsOnDiagonal < dotsForWin) return false;
 
             sameSymbolCounter = 0;
             for (int i = startRow; i < quantityDotsOnDiagonal; i++) {
-                if ((map.cells[i][+startCol].getType()).equals(type)) {
+                if ((map.cells[i][i+startCol].getType()).equals(type)) {
                     sameSymbolCounter += 1;
                     if (sameSymbolCounter >= dotsForWin) {
                         return true;
@@ -150,28 +148,4 @@ public class Game {
         return false;
     }
 
-    public void humanTurn() {
-        int rowNumber, colNumber;
-        do {
-            System.out.println("Ход пользователя. Введите номер строки и столбца");
-            System.out.print("Строка = ");
-            rowNumber = scanner.nextInt();
-            System.out.print("Колонка = ");
-            colNumber = scanner.nextInt();
-        } while (!map.isCellValid(rowNumber, colNumber));
-
-        map.cells[rowNumber - 1][colNumber - 1].putCross();
-    }
-
-    public void gameOver (){
-        if (checkEnd(CellType.CROSS)){
-            System.out.println("Поздравляю, Вы победили");
-        }
-        if (checkEnd(CellType.ZERO)){
-            System.out.println("Вы проиграли");
-        }
-        if (map.isFull()){
-            System.out.println("Ничья");
-        }
-    }
 }

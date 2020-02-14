@@ -1,4 +1,4 @@
-package ru.geekbrains.valerych.lesson4;
+package ru.valerych.tictactoe;
 
 public class Cell {
 
