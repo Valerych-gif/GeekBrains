@@ -5,9 +5,9 @@ public class Game {
     private Map map;
     int dotsForWin;
 
-    Game (Map map, int dotsForWin){
-        this.map=map;
-        this.dotsForWin=dotsForWin;
+    Game(Map map, int dotsForWin) {
+        this.map = map;
+        this.dotsForWin = dotsForWin;
     }
 
     public boolean checkEnd(CellType type) {
@@ -18,7 +18,7 @@ public class Game {
     }
 
     public boolean checkWin(CellType type) {
-        return checkRows(type)||checkCols(type)||checkDiagonals(type);
+        return checkRows(type) || checkCols(type) || checkDiagonals(type);
 
     }
 
@@ -27,13 +27,13 @@ public class Game {
         for (int i = 0; i < map.size; i++) {
             sameSymbolCounter = 0;
             for (int j = 0; j < map.size; j++) {
-                if ((map.cells[i][j].getType()).equals(type)){
+                if ((map.cells[i][j].getType()).equals(type)) {
                     sameSymbolCounter += 1;
-                    if (sameSymbolCounter>=dotsForWin){
+                    if (sameSymbolCounter >= dotsForWin) {
                         return true;
                     }
                 } else {
-                    sameSymbolCounter=0;
+                    sameSymbolCounter = 0;
                 }
             }
         }
@@ -45,9 +45,9 @@ public class Game {
         for (int i = 0; i < map.size; i++) {
             sameSymbolCounter = 0;
             for (int j = 0; j < map.size; j++) {
-                if ((map.cells[j][i].getType()).equals(type)){
+                if ((map.cells[j][i].getType()).equals(type)) {
                     sameSymbolCounter += 1;
-                    if (sameSymbolCounter>=dotsForWin){
+                    if (sameSymbolCounter >= dotsForWin) {
                         return true;
                     }
                 } else {
@@ -61,28 +61,27 @@ public class Game {
     private boolean checkDiagonals(CellType type) {
         for (int i = 0; i < map.size; i++) {
             if (
-                    checkDiagonal(i, 0, type, "main")||
-                    checkDiagonal(0, i, type,"main")||
-                    checkDiagonal(i, 0, type, "reverse")||
-                    checkDiagonal(0, i, type,"reverse")
+                    checkMainDiagonals(i, 0, type) ||
+                            checkMainDiagonals(0, i, type) ||
+                            checkReverseDiagonals(i, 0, type) ||
+                            checkReverseDiagonals(0, i, type)
             ) return true;
         }
         return false;
     }
 
-    // @TODO Эту часть кода надо переписать в удобочитаемый вид (избавиться от флагов и разбить все на разные методы)
-    private boolean checkDiagonal (int startRow, int startCol, CellType type, String direction){
-        int quantityDotsOnDiagonal=map.size;
+    private boolean checkMainDiagonals(int startRow, int startCol, CellType type) {
+        int quantityDotsOnDiagonal = map.size;
         int sameSymbolCounter;
 
-        if (startRow>=0&&direction.equals("main")) {
+        if (startRow >= 0) {
 
             quantityDotsOnDiagonal -= startRow;
             if (quantityDotsOnDiagonal < dotsForWin) return false;
 
             sameSymbolCounter = 0;
             for (int i = startCol; i < quantityDotsOnDiagonal; i++) {
-                if ((map.cells[i+startRow][i].getType()).equals(type)) {
+                if ((map.cells[i + startRow][i].getType()).equals(type)) {
                     sameSymbolCounter += 1;
                     if (sameSymbolCounter >= dotsForWin) {
                         return true;
@@ -93,14 +92,36 @@ public class Game {
             }
         }
 
-        if (startCol>0&&direction.equals("main")) {
+        if (startCol > 0) {
 
             quantityDotsOnDiagonal -= startCol;
             if (quantityDotsOnDiagonal < dotsForWin) return false;
 
             sameSymbolCounter = 0;
             for (int i = startRow; i < quantityDotsOnDiagonal; i++) {
-                if ((map.cells[i][i+startCol].getType()).equals(type)) {
+                if ((map.cells[i][i + startCol].getType()).equals(type)) {
+                    sameSymbolCounter += 1;
+                    if (sameSymbolCounter >= dotsForWin) {
+                        return true;
+                    }
+                } else {
+                    sameSymbolCounter = 0;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean checkReverseDiagonals(int startRow, int startCol, CellType type) {
+        int quantityDotsOnDiagonal = map.size;
+        int sameSymbolCounter;
+        if (startRow >= 0) {
+
+            quantityDotsOnDiagonal = map.size - startRow;
+            sameSymbolCounter = 0;
+
+            for (int i = startCol; i < quantityDotsOnDiagonal; i++) {
+                if ((map.cells[i + startRow][map.size - 1 - i].getType()).equals(type)) {
                     sameSymbolCounter += 1;
                     if (sameSymbolCounter >= dotsForWin) {
                         return true;
@@ -111,36 +132,19 @@ public class Game {
             }
         }
 
-        if (startRow>=0&&direction.equals("reverse")){
+        if (startCol < (map.size - 1)) {
 
-            quantityDotsOnDiagonal = map.size - startRow;
-            sameSymbolCounter=0;
-
-            for (int i = startCol; i < quantityDotsOnDiagonal; i++) {
-                if ((map.cells[i+startRow][map.size-1-i].getType()).equals(type)){
-                    sameSymbolCounter += 1;
-                    if (sameSymbolCounter>=dotsForWin){
-                        return true;
-                    }
-                } else {
-                    sameSymbolCounter=0;
-                }
-            }
-        }
-
-        if (startCol<(map.size-1)&&direction.equals("reverse")){
-
-            quantityDotsOnDiagonal = startCol+1;
-            sameSymbolCounter=0;
+            quantityDotsOnDiagonal = startCol + 1;
+            sameSymbolCounter = 0;
 
             for (int i = startRow; i < quantityDotsOnDiagonal; i++) {
-                if ((map.cells[i][startCol-i].getType()).equals(type)){
+                if ((map.cells[i][startCol - i].getType()).equals(type)) {
                     sameSymbolCounter += 1;
-                    if (sameSymbolCounter>=dotsForWin){
+                    if (sameSymbolCounter >= dotsForWin) {
                         return true;
                     }
                 } else {
-                    sameSymbolCounter=0;
+                    sameSymbolCounter = 0;
                 }
             }
         }

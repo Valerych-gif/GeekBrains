@@ -20,8 +20,6 @@ public class TicTacToe {
             gameInterface = new JFrameInterface(map);
         }
 
-
-
         gameInterface.print();
 
         do{
@@ -40,14 +38,5 @@ public class TicTacToe {
 
         gameInterface.gameOver(game);
     }
-
-
-
-
-
-
-
-
-
 
 }

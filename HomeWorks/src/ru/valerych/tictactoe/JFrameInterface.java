@@ -26,6 +26,7 @@ public class JFrameInterface extends GameInterface {
         gameWindow.setAlwaysOnTop(true);
         gameWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         gameWindow.setBounds(X_POSITION, Y_POSITION, 50*map.size, 50*map.size+50);
+        gameWindow.setResizable(false);
         gameWindow.setLayout(new BoxLayout(gameWindow.getContentPane(), BoxLayout.Y_AXIS));
         areas = new Pole[map.size + 1][map.size + 1];
         row = new JPanel[map.size];

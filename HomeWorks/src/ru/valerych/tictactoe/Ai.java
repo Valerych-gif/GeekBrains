@@ -15,52 +15,38 @@ public class Ai {
 
     public void aiTurn() {
 
+        tryToWin();
+        tryToDoNotLose();
+        doRandomTurn();
+
+    }
+
+    private void tryToWin (){
+
+        for (int i = 0; i < map.size; i++) {
+            for (int j = 0; j < map.size; j++) {
+
+                if (map.isCellValid(i+1, j+1) && isWinnable(i+1, j+1)) {
+                    map.cells[i][j].putZero();
+                    return;
+                }
+            }
+        }
+    }
+
+    private void tryToDoNotLose (){
+        for (int i = 0; i < map.size; i++) {
+            for (int j = 0; j < map.size; j++) {
+                if (map.isCellValid(i+1, j+1) && isLosable(i+1, j+1)) {
+                    map.cells[i][j].putZero();
+                    return;
+                }
+            }
+        }
+    }
+
+    private void doRandomTurn(){
         int rowNumber, colNumber;
-
-        for (int i = 0; i < map.size; i++) {
-            for (int j = 0; j < map.size; j++) {
-                rowNumber = i + 1;
-                colNumber = j + 1;
-                if (map.isCellValid(rowNumber, colNumber) && isWinnable(rowNumber, colNumber)) {
-                    map.cells[rowNumber - 1][colNumber - 1].putZero();
-                    return;
-                }
-            }
-        }
-
-        for (int i = 0; i < map.size; i++) {
-            for (int j = 0; j < map.size; j++) {
-                rowNumber = i + 1;
-                colNumber = j + 1;
-                if (map.isCellValid(rowNumber, colNumber) && isLosable(rowNumber, colNumber)) {
-                    map.cells[rowNumber - 1][colNumber - 1].putZero();
-                    return;
-                }
-            }
-        }
-
-        for (int i = 0; i < map.size - 2; i++) {
-            for (int j = 0; j < map.size; j++) {
-                if (map.cells[i + 1][j].getType() == CellType.CROSS && map.cells[i + 2][j].getType() == CellType.CROSS) {
-                    if (map.isCellValid(i+1, j+1)) {
-                        map.cells[i][j].putZero();
-                        return;
-                    }
-                }
-            }
-        }
-
-        for (int i = 0; i < map.size; i++) {
-            for (int j = 0; j < map.size-2; j++) {
-                if (map.cells[i][j + 1].getType() == CellType.CROSS && map.cells[i][j + 2].getType() == CellType.CROSS) {
-                    if (map.isCellValid(i+1, j+1)) {
-                        map.cells[i][j].putZero();
-                        return;
-                    }
-                }
-            }
-        }
-
         do {
             rowNumber = random.nextInt(map.size) + 1;
             colNumber = random.nextInt(map.size) + 1;
