@@ -4,10 +4,19 @@ public class Game {
 
     private Map map;
     int dotsForWin;
+    private Cell lastHumanTurn;
 
     Game(Map map, int dotsForWin) {
         this.map = map;
         this.dotsForWin = dotsForWin;
+    }
+
+    public Cell getLastHumanTurn() {
+        return lastHumanTurn;
+    }
+
+    public void setLastHumanTurn(Cell lastHumanTurn) {
+        this.lastHumanTurn = lastHumanTurn;
     }
 
     public boolean checkEnd(CellType type) {

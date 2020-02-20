@@ -11,6 +11,7 @@ public class JFrameInterface extends GameInterface {
     private final int X_POSITION = 200;
     private final int Y_POSITION = 200;
     Map map;
+    Game game;
     JFrame gameWindow;
     public Pole[][] areas;
     JPanel[] row;
@@ -20,8 +21,9 @@ public class JFrameInterface extends GameInterface {
         int colN, rowN;
     }
 
-    public JFrameInterface(Map map) {
+    public JFrameInterface(Map map, Game game) {
         this.map = map;
+        this.game = game;
         gameWindow = new JFrame("TicTacToe");
         gameWindow.setAlwaysOnTop(true);
         gameWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -70,6 +72,7 @@ public class JFrameInterface extends GameInterface {
         }
 
         map.cells[rowNumber - 1][colNumber - 1].putCross();
+        game.setLastHumanTurn(map.cells[rowNumber - 1][colNumber - 1]);
 
     }
 
